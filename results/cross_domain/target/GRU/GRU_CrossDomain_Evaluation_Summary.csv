@@ -1,0 +1,5 @@
+Dataset,In-Domain F1,In-Domain Accuracy,In-Domain Precision,In-Domain Recall,In-Domain FPR,Avg Cross F1,Avg Cross Accuracy,Avg Cross Precision,Avg Cross Recall,Avg Cross FPR,F1 Decay,Accuracy Decay,Precision Decay,Recall Decay,FPR Increase
+NFv2-UNSW-NB15,99.83,99.83,99.66,100.0,0.34,21.04,38.0,32.42,15.64,39.64,78.79,61.83,67.24,84.36,39.3
+NFv2-BoT-IoT,99.99,99.99,100.0,99.99,0.0,11.92,49.59,49.89,6.86,7.7,88.07,50.4,50.11,93.13,7.7
+NFv2-ToN-IoT,99.6,99.6,99.6,99.6,0.4,1.08,43.86,9.26,0.58,12.88,98.52,55.74,90.34,99.02,12.48
+NFv2-CIC-2018,100.0,100.0,100.0,100.0,0.0,7.01,48.0,19.89,4.55,8.57,92.99,52.0,80.11,95.45,8.57

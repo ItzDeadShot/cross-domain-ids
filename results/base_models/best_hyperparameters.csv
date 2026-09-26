@@ -1,0 +1,17 @@
+Architecture,Dataset,learning_rate,batch_size,tuning_dir
+MLP,NFv2-UNSW-NB15,0.01,128,tuning/mlp_unsw
+MLP,NFv2-BoT-IoT,0.001,32,tuning/mlp_bot
+MLP,NFv2-ToN-IoT,0.001,128,tuning/mlp_ton
+MLP,NFv2-CIC-2018,0.001,32,tuning/mlp_cic
+DNN,NFv2-UNSW-NB15,0.01,32,tuning/dnn_unsw
+DNN,NFv2-BoT-IoT,0.01,128,tuning/dnn_bot
+DNN,NFv2-ToN-IoT,0.001,32,tuning/dnn_ton
+DNN,NFv2-CIC-2018,0.01,128,tuning/dnn_cic
+GRU,NFv2-UNSW-NB15,0.01,32,tuning/gru_unsw
+GRU,NFv2-BoT-IoT,0.001,256,tuning/gru_bot
+GRU,NFv2-ToN-IoT,0.001,128,tuning/gru_ton
+GRU,NFv2-CIC-2018,0.001,256,tuning/gru_cic
+LSTM,NFv2-UNSW-NB15,0.001,64,tuning/lstm_unsw
+LSTM,NFv2-BoT-IoT,0.001,32,tuning/lstm_bot
+LSTM,NFv2-ToN-IoT,0.001,128,tuning/lstm_ton
+LSTM,NFv2-CIC-2018,0.001,256,tuning/lstm_cic

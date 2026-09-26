@@ -1,0 +1,20 @@
+# Data (see data/README.md)
+data/*
+!data/README.md
+
+# Local training runs
+runs/
+
+# Python
+__pycache__/
+*.egg-info/
+.venv/
+venv/
+
+# Jupyter
+.ipynb_checkpoints/
+
+# Editors / OS
+.idea/
+.vscode/
+.DS_Store
