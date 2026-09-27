@@ -1,5 +1,7 @@
 # Cross-Domain Evaluation of Deep-Learning NIDS on NetFlow v2
 
+Code and results for the paper *Unveiling the Generalizability Gap: A Cross-Domain Evaluation of Machine Learning Algorithms for Network Intrusion Detection*, presented at IEEE ICETAS 2024 ([doi:10.1109/ICETAS62372.2024.11119949](https://doi.org/10.1109/ICETAS62372.2024.11119949)).
+
 How well does a network intrusion detection model trained on one network generalise to another? This repository trains four deep-learning architectures (MLP, DNN, GRU, LSTM) on each of four NetFlow v2 datasets. It then tests every model on the held-out test split of every dataset, giving a 4 × 4 source → target matrix per architecture.
 
 The headline result: every model reaches ≥ 99.4% F1 in-domain, but the mean cross-domain F1 falls to 0.5–36%.
@@ -9,6 +11,7 @@ The headline result: every model reaches ≥ 99.4% F1 in-domain, but the mean cr
 ```
 ├── src/cdids/                 library code: config, data loading/splitting, model definitions, metrics
 ├── scripts/
+│   ├── preprocess.py          raw NetFlow v2 CSVs -> balanced Benign-vs-DoS datasets
 │   ├── make_splits.py         processed CSVs -> stratified 72/18/10 train/val/test splits
 │   ├── train_base_models.py   Hyperband tuning + training of the 16 base models
 │   ├── cross_domain_eval.py   4 x 4 source -> target evaluation per architecture
@@ -41,6 +44,7 @@ Then put the data in place as described in [`data/README.md`](data/README.md).
 
 | Step | Command | Output |
 |---|---|---|
+| 0. Build the balanced datasets from the raw CSVs | `python scripts/preprocess.py` | `data/processed/` (byte-identical to the files used in the paper) |
 | 1. Split the processed data | `python scripts/make_splits.py` | `data/split-data/` (byte-identical to the splits used in the paper) |
 | 2. *(optional)* Retrain the base models | `python scripts/train_base_models.py` | `runs/` (the models in `models/` are not overwritten) |
 | 3. Cross-domain matrices, target scaling | `python scripts/cross_domain_eval.py --scaling target` | `results/cross_domain/target/<ARCH>/` |
@@ -51,7 +55,7 @@ Steps 3–5 need only the provided models and run in a few minutes on a CPU.
 
 ## Method
 
-**Data.** Four NetFlow v2 datasets, reduced to a balanced binary task (Benign vs. DoS) over 39 flow features. Source IP/port and destination IP/port are removed. See [`data/README.md`](data/README.md).
+**Data.** Four NetFlow v2 datasets, reduced to a balanced binary task (Benign vs. DoS) over 39 flow features. Source IP/port and destination IP/port are removed. Balancing undersamples the larger class with `random_state=42` within 4,000,000-row chunks of each raw file. See [`data/README.md`](data/README.md) for the full procedure.
 
 | Dataset | Flows | Train / Val / Test |
 |---|---:|---|
@@ -94,12 +98,27 @@ Per-pair values for all five metrics are in the `*_Matrix.csv` files next to eac
 ## Notes on reproducibility
 
 - **Scaler randomness.** `QuantileTransformer` fits its quantiles on a random subsample of 10,000 rows, and the reported runs did not seed it. Re-running therefore reproduces most matrix cells to within a few tenths of a point, but a few cells are sensitive to the subsample. For example, GRU UNSW-NB15 → BoT-IoT ranges from 43.7 to 85.8% F1 over ten scaler seeds (43.8% reported). Pass `--seed` to `cross_domain_eval.py` for deterministic output.
+- **Keras version.** Use Keras 3.5.0, the version the models were saved with. Under Keras 3.9 the LSTM models give slightly different predictions for inputs far outside their training range; on in-range inputs the two versions agreed in our checks. MLP, DNN and GRU predictions were identical across both versions.
 - **Duplicate flows.** The processed datasets contain many exact duplicate rows: 89% for BoT-IoT, 64% for ToN-IoT, 46% for UNSW-NB15 and 34% for CIC-2018. Random splitting therefore places identical flows in both train and test, which inflates in-domain scores. Cross-domain pairs are not affected in the same way.
 - **Provenance.** `results/` holds the outputs of the original runs. The 4 × 4 matrix CSVs were extracted from the logged outputs of `notebooks/cross_domain/`, and they reproduce the saved summary tables exactly. Training histories were extracted from the Keras logs in `notebooks/base_training/`.
+- **Base-model test metrics vs. saved models.** The training notebooks computed `results/base_models/test_metrics.csv` and the confusion matrices with the in-memory model after the last epoch. The files in `models/` are the lowest-`val_loss` checkpoints, which can differ by a few test predictions. For example, DNN on UNSW-NB15 has 7 false positives after the last epoch and 3 with the saved checkpoint. All cross-domain results use the saved checkpoints.
 
 ## Citation
 
-*To be added once the paper is published.*
+If you use this code or these results, please cite:
+
+> M. I. Amin, M. Shen, S. Ul Arfeen Laghari, M. Parthipan and S. Karuppayah, "Unveiling the Generalizability Gap: A Cross-Domain Evaluation of Machine Learning Algorithms for Network Intrusion Detection," in *2024 IEEE 9th International Conference on Engineering Technologies and Applied Sciences (ICETAS)*, 2024, pp. 1–7, doi: 10.1109/ICETAS62372.2024.11119949.
+
+```bibtex
+@inproceedings{11119949,
+  title     = {Unveiling the Generalizability Gap: A Cross-Domain Evaluation of Machine Learning Algorithms for Network Intrusion Detection},
+  booktitle = {2024 {{IEEE}} 9th International Conference on Engineering Technologies and Applied Sciences ({{ICETAS}})},
+  author    = {Amin, Muhammad Iqrar and Shen, Menqing and Ul Arfeen Laghari, Shams and Parthipan, Mithiiran and Karuppayah, Shankar},
+  year      = 2024,
+  pages     = {1--7},
+  doi       = {10.1109/ICETAS62372.2024.11119949}
+}
+```
 
 ## License
 

@@ -1,0 +1,35 @@
+cff-version: 1.2.0
+message: "If you use this code or these results, please cite the paper below."
+title: "Cross-domain evaluation of deep-learning NIDS on NetFlow v2"
+repository-code: "https://github.com/ItzDeadShot/cross-domain-ids"
+license: MIT
+authors:
+  - family-names: Amin
+    given-names: Muhammad Iqrar
+  - family-names: Shen
+    given-names: Menqing
+  - family-names: Ul Arfeen Laghari
+    given-names: Shams
+  - family-names: Parthipan
+    given-names: Mithiiran
+  - family-names: Karuppayah
+    given-names: Shankar
+preferred-citation:
+  type: conference-paper
+  title: "Unveiling the Generalizability Gap: A Cross-Domain Evaluation of Machine Learning Algorithms for Network Intrusion Detection"
+  authors:
+    - family-names: Amin
+      given-names: Muhammad Iqrar
+    - family-names: Shen
+      given-names: Menqing
+    - family-names: Ul Arfeen Laghari
+      given-names: Shams
+    - family-names: Parthipan
+      given-names: Mithiiran
+    - family-names: Karuppayah
+      given-names: Shankar
+  collection-title: "2024 IEEE 9th International Conference on Engineering Technologies and Applied Sciences (ICETAS)"
+  year: 2024
+  start: 1
+  end: 7
+  doi: "10.1109/ICETAS62372.2024.11119949"
